@@ -3,6 +3,8 @@ package tn.esprit.spring.restcontrollers;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.spring.Services.IUserService;
+import tn.esprit.spring.dto.utilisateur.UtilisateurRequest;
+import tn.esprit.spring.dto.utilisateur.UtilisateurResponse;
 import tn.esprit.spring.entities.Utilisateur;
 
 import java.util.List;
@@ -19,30 +21,39 @@ public class UserRestController {
     IUserService service;
 
     @GetMapping
-    public List<Utilisateur> findAll()
-    {
+    public List<Utilisateur> findAll() {
         return service.selectAllUsers();
     }
 
     @PostMapping
-    public Utilisateur add(@RequestBody Utilisateur user){
+    public Utilisateur add(@RequestBody Utilisateur user) {
         return service.addUser(user);
     }
 
     @GetMapping("getById/{id}")
-    public Utilisateur getById(@PathVariable long id){
+    public Utilisateur getById(@PathVariable long id) {
         return service.selectUserByIdWithGet(id);
     }
 
     // http://localhost:8088/api/user/getById/1
     @GetMapping("getById2/{id}")
-    public Utilisateur getById2(@PathVariable(name = "id") long idididididididididi){
+    public Utilisateur getById2(@PathVariable(name = "id") long idididididididididi) {
         return service.selectUserByIdWithGet(idididididididididi);
     }
 
     //http://localhost:8088/api/user?id=1&...=...
     @DeleteMapping
-    public void deleteById(@RequestParam long id){
+    public void deleteById(@RequestParam long id) {
         service.deleteUserById(id);
+    }
+
+    @PostMapping("addUserWithDTO")
+    public UtilisateurResponse addUserWithDTO(@RequestBody UtilisateurRequest utilisateurRequest) {
+        return service.addUserWithDTO(utilisateurRequest);
+    }
+
+    @PostMapping("saveUsersWithDTO")
+    public List<UtilisateurResponse> saveUsersWithDTO(@RequestBody List<UtilisateurRequest> users){
+        return service.saveUsersWithDTO(users);
     }
 }
